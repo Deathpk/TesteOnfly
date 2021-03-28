@@ -21,6 +21,8 @@ Route::get('/', function () {
 });
 
 Route::prefix('dashboard')->middleware(['auth'])->group(function (){ 
-    Route::get('/despesas',[DespesasController::class, 'getAllDespesas']);
+    Route::get('/despesas/get',[DespesasController::class, 'getAllDespesas']);
+    // Route::post('/despesas/edit/form', [DespesasController::class, 'showEditDespesaForm']);
+    Route::post('/despesas/edit/',[DespesasController::class, 'editDespesa']);
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });

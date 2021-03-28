@@ -17,14 +17,18 @@ class DespesasController extends Controller
         return response()->json(Despesas::all());
     }
 
-    // public function getDetalhes()
-    // {
-
-    // }
-
-    public function editDespesa()
+    
+    public function showEditDespesaForm(Request $request)
     {
+        dd($request);
+        // return view('editform', ['despesa' => $request->despesa] );
 
+    }
+
+    public function editDespesa(Request $request)
+    {
+        dd($request);
+        
     }
 
     public function deleteDespesa()

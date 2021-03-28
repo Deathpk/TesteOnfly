@@ -1,7 +1,7 @@
 <template>
     <v-simple-table dark>
+        
         <template v-slot:default>
-          
         <thead>
             <tr>
 
@@ -32,17 +32,17 @@
             <td>{{ despesa.data }}</td>
             <td>$ {{ despesa.valor }}</td>
             <td>
-                <form method="POST" @submit.prevent="editDespesa()">
-                    <v-btn
-                    depressed
-                    color="primary"
-                    type="submit"
-                    >
-                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
-                    </svg>
-                    </v-btn>
-                </form>    
+                <v-btn
+                depressed
+                color="primary"
+                @click="editDespesaForm(despesa)"
+                >
+                <!-- <router-link class="black--text" :to="{name:'editForm', params:{data:despesa} }">sla</router-link> -->
+                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
+                </svg>
+                </v-btn>
+                 
 
                 <v-btn
                 depressed
@@ -62,40 +62,41 @@
                 </svg>
                 </v-btn>
             </td>
-            
             </tr>
         </tbody>
         </template>
-  </v-simple-table>
+    </v-simple-table>
 </template>
 
 <script>
 import axios from 'axios';
 export default {
+  
   data(){
     return{
       despesas:[]
     }
   },
   methods:{
-    // editDespesa(despesa){
-    //   axios.post('/task/'+ task, {
-    //     id: task
-    //   })
-    //  .then((response) => { 
-    //   console.log(response)
-    //   this.teste = response.data
-    //   console.log(this.batata)
-    //  })
-    //  .catch((error) => {
-    //   console.log(error);
-    //  });
+    editDespesaForm(despesa){
+        this.$router.push({ name:"editForm",params:{ data:despesa } })
+    },
+    // showEditDespesaForm(despesa){
+    //     axios.post('/dashboard/despesas/edit/form', {
+    //         despesa:despesa
+    //     })
+    //     .then((response) => {
+    //         console.log(response);
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //   });
     // },
+
     getAllDespesas(){
-      axios.get('/dashboard/despesas')
+      axios.get('/dashboard/despesas/get')
       .then((response) => {
         this.despesas = response.data 
-        console.log(response)
       })
       .catch((error) => {
           console.log(error);

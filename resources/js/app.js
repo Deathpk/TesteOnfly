@@ -7,8 +7,14 @@
 require('./bootstrap');
 
 window.Vue = require('vue').default;
-
+import VueRouter from 'vue-router';
 import vuetify from './vuetify';
+import Vue from 'vue';
+import EditPage from './components/EditPage.vue';
+import DataTable from './components/DataTable.vue';
+import Dashboard from './components/Dashboard.vue';
+
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -21,6 +27,9 @@ import vuetify from './vuetify';
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('dashboard-component', require('./components/Dashboard.vue').default);
+Vue.component('edit-form-component', require('./components/EditPage.vue').default);
+Vue.component('app-vue', require('./App.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -28,7 +37,26 @@ Vue.component('dashboard-component', require('./components/Dashboard.vue').defau
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.use(VueRouter);
+const router = new VueRouter({
+    mode:'history',
+    routes: [
+
+        {
+            path:'/dashboard/home',
+            name:'dashboard',
+            component: Dashboard
+        },
+        {
+            path: '/dashboard/despesas/edit/form',
+            name:'editForm',
+            component: EditPage 
+        }
+    ]
+});
+
 const app = new Vue({
     el: '#app',
-    vuetify
+    vuetify,
+    router
 });
