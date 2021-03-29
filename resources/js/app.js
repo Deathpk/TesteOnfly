@@ -11,7 +11,7 @@ import VueRouter from 'vue-router';
 import vuetify from './vuetify';
 import Vue from 'vue';
 import EditPage from './components/EditPage.vue';
-import DataTable from './components/DataTable.vue';
+import CreatePage from './components/CreatePage.vue';
 import Dashboard from './components/Dashboard.vue';
 
 
@@ -46,6 +46,11 @@ const router = new VueRouter({
             path:'/dashboard/home',
             name:'dashboard',
             component: Dashboard
+        },
+        {
+            path: '/dashboard/despesas/create/form',
+            name:'createForm',
+            component: CreatePage 
         },
         {
             path: '/dashboard/despesas/edit/form',

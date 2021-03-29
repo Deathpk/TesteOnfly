@@ -44,7 +44,6 @@
                 </v-dialog>
             </v-row>
         <v-row>
-            <!-- <SideBar/> -->
             <v-col>
                  <v-btn
                 depressed
@@ -52,6 +51,7 @@
                 top
                 class="novaDespesa"
                 :style="{left: '50%', transform:'translateX(-50%)'}"
+                @click="createDespesaForm()"
                 >
                  Adicionar Despesa
                 </v-btn>
@@ -76,6 +76,9 @@ export default {
         openDeleteModal(id){
             this.currentDespesaSelected = id
             this.dialog = true
+        },
+        createDespesaForm(){
+            this.$router.push({ name:"createForm"})
         },
         deleteDespesa(){
             this.dialog = false

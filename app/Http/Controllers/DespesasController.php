@@ -4,12 +4,31 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Despesas;
-
+use App\Models\User;
+use Auth;
 class DespesasController extends Controller
 {
-    public function createDespesa($id,Request $request)
+    public function createDespesa(Request $request)
     {
-        dd($id);
+        try{
+            Despesas::insert([
+                'descricao' => $request->descricao,
+                'data' => $request->data,
+                'anexo' => $request->anexo,
+                'user_id' => Auth::user()->id,
+                'valor' => $request->valor,
+            ]);
+        } catch(Exception $e){
+            return response()->json([
+                'error' => true,
+                'message' => 'Oops! , ocorreu um erro inesperado. Mensagem: '.$e->getMessage()
+            ],400);
+        }
+
+        return response()->json([
+            'error' => false,
+            'message' => 'Despesa Adicionada com sucesso!'
+        ],200);
     }
 
     public function getAllDespesas()
@@ -18,13 +37,7 @@ class DespesasController extends Controller
     }
 
     
-    // public function showEditDespesaForm(Request $request)
-    // {
-    //     dd($request);
-    //     // return view('editform', ['despesa' => $request->despesa] );
-
-    // }
-
+    
     public function editDespesa(Request $request)
     {
         try{
@@ -53,7 +66,7 @@ class DespesasController extends Controller
                 'message' => 'Oops! , ocorreu um erro inesperado. Mensagem: '.$e->getMessage()
             ],400);
         }
-        
+
         return response()->json([
             'error' => false,
             'message' => 'Despesa deletada com sucesso!'
