@@ -103,11 +103,8 @@ export default {
                 data:this.date
             })
             .then((response) => {
-                console.log(response)
-                if(response.error){
-                    this.$router.push({ name:"dashboard" , message: response.message})
-                }
-                this.$router.push({ name:"dashboard" , message: response.message})
+                // console.log(response)
+                this.$router.push({ name:"dashboard" , params:{item:response} })
             })
             .catch((error) => {
                 console.log(error)

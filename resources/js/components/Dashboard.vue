@@ -64,12 +64,14 @@
 
 <script>
 import DataTable from './DataTable'
+import Swal from 'sweetalert2'
 export default {
     components:{DataTable},
     data(){
         return{
             dialog:false,
-            currentDespesaSelected: null
+            currentDespesaSelected: null,
+            // currentMessage:''
         }
     },
     methods:{
@@ -88,13 +90,32 @@ export default {
             .then((response) => {
                 console.log(response)
                 this.currentDespesaSelected = null
-                this.$router.push({ name:"dashboard" , message: response.message})
+                this.$router.go({ params:{item: response} })
             })
             .catch((error) => {
                 console.log(error)
                 this.currentDespesaSelected = null
             });
         },
+    },
+    created(){
+        console.log(this.$route.params)
+        if(this.$route.params.item.data.error){
+            Swal.fire({
+                title: 'Oops , ocorreu um erro!',
+                text: this.$route.params.item.data.message,
+                icon: 'error',
+                confirmButtonText: 'Confirmar'
+            })
+        }
+        else if(!this.$route.params.item.data.error){
+            Swal.fire({
+                title: 'Sucesso!',
+                text: this.$route.params.item.data.message,
+                icon: 'success',
+                confirmButtonText: 'Confirmar'
+            })
+        }
     }
 }
 </script>

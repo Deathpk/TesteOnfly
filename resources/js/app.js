@@ -13,6 +13,7 @@ import Vue from 'vue';
 import EditPage from './components/EditPage.vue';
 import CreatePage from './components/CreatePage.vue';
 import Dashboard from './components/Dashboard.vue';
+import Swal from 'sweetalert2'
 
 
 /**

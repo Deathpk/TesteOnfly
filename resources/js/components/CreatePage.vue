@@ -82,7 +82,7 @@
 </template>
 
 <script>
-
+// import Swal from 'sweetalert2'
 export default {
     data(){
         return{
@@ -102,11 +102,9 @@ export default {
                 data:this.date
             })
             .then((response) => {
-                console.log(response)
-                if(response.error){
-                    this.$router.push({ name:"dashboard" , message: response.message})
-                }
-                this.$router.push({ name:"dashboard" , message: response.message})
+                // console.log(response)
+                this.$router.push({ name:"dashboard" , params:{item:response} })
+                // this.$router.push({ name:"dashboard" , params:{success:response.message} })
             })
             .catch((error) => {
                 console.log(error)
