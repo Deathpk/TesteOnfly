@@ -63,12 +63,11 @@
             </v-date-picker>
             </v-menu>
 
-            <v-btn
-            depressed
-            color="primary"
-            >
-            Anexo
-            </v-btn>
+            <v-file-input
+            accept="image/*"
+            label="Anexo"
+            @change="selectFile($event)"
+            ></v-file-input>
 
             <v-btn
             depressed
@@ -82,33 +81,35 @@
 </template>
 
 <script>
-// import Swal from 'sweetalert2'
 export default {
     data(){
         return{
             descricao: '',
             valor:'',
-            anexo:'',
+            anexo:null,
             date: new Date().toISOString().substr(0, 10),
             menu: false,
         }
     },
     methods:{
         createDespesa(){
-            axios.post('/dashboard/despesas/create/',{
-                descricao:this.descricao,
-                valor:this.valor,
-                anexo:this.anexo,
-                data:this.date
-            })
+            console.log(this.anexo);
+            const form = new FormData();
+            form.append('anexo', this.anexo);
+            form.append('descricao', this.descricao);
+            form.append('valor', this.valor);
+            form.append('data', this.date);
+
+            axios.post('/dashboard/despesas/create/', form)
             .then((response) => {
-                // console.log(response)
                 this.$router.push({ name:"dashboard" , params:{item:response} })
-                // this.$router.push({ name:"dashboard" , params:{success:response.message} })
             })
             .catch((error) => {
                 console.log(error)
             });
+        },
+        selectFile(event){
+            this.anexo = event
         }
     },
 }

@@ -65,13 +65,6 @@
 
             <v-btn
             depressed
-            color="primary"
-            >
-            Anexo
-            </v-btn>
-
-            <v-btn
-            depressed
             color="success"
             @click="editDespesa()"
             >
@@ -89,7 +82,6 @@ export default {
             descricao: '',
             id:'',
             valor:'',
-            anexo:'',
             date: new Date().toISOString().substr(0, 10)
         }
     },
@@ -99,7 +91,6 @@ export default {
                 id: this.id,
                 descricao:this.descricao,
                 valor:this.valor,
-                anexo:this.anexo,
                 data:this.date
             })
             .then((response) => {
@@ -116,7 +107,6 @@ export default {
         this.id = this.$route.params.data.id
         this.date = this.$route.params.data.data
         this.valor = this.$route.params.data.valor
-        this.anexo = this.$route.params.data.anexo
     }
 }
 </script>

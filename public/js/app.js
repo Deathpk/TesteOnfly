@@ -1948,14 +1948,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-// import Swal from 'sweetalert2'
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       descricao: '',
       valor: '',
-      anexo: '',
+      anexo: null,
       date: new Date().toISOString().substr(0, 10),
       menu: false
     };
@@ -1964,23 +1962,25 @@ __webpack_require__.r(__webpack_exports__);
     createDespesa: function createDespesa() {
       var _this = this;
 
-      axios.post('/dashboard/despesas/create/', {
-        descricao: this.descricao,
-        valor: this.valor,
-        anexo: this.anexo,
-        data: this.date
-      }).then(function (response) {
-        // console.log(response)
+      console.log(this.anexo);
+      var form = new FormData();
+      form.append('anexo', this.anexo);
+      form.append('descricao', this.descricao);
+      form.append('valor', this.valor);
+      form.append('data', this.date);
+      axios.post('/dashboard/despesas/create/', form).then(function (response) {
         _this.$router.push({
           name: "dashboard",
           params: {
             item: response
           }
-        }); // this.$router.push({ name:"dashboard" , params:{success:response.message} })
-
+        });
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    selectFile: function selectFile(event) {
+      this.anexo = event;
     }
   }
 });
@@ -2350,20 +2350,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       descricao: '',
       id: '',
       valor: '',
-      anexo: '',
       date: new Date().toISOString().substr(0, 10)
     };
   },
@@ -2375,7 +2367,6 @@ __webpack_require__.r(__webpack_exports__);
         id: this.id,
         descricao: this.descricao,
         valor: this.valor,
-        anexo: this.anexo,
         data: this.date
       }).then(function (response) {
         // console.log(response)
@@ -2395,7 +2386,6 @@ __webpack_require__.r(__webpack_exports__);
     this.id = this.$route.params.data.id;
     this.date = this.$route.params.data.data;
     this.valor = this.$route.params.data.valor;
-    this.anexo = this.$route.params.data.anexo;
   }
 });
 
@@ -42758,9 +42748,14 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _c("v-btn", { attrs: { depressed: "", color: "primary" } }, [
-          _vm._v("\n        Anexo\n        ")
-        ]),
+        _c("v-file-input", {
+          attrs: { accept: "image/*", label: "Anexo" },
+          on: {
+            change: function($event) {
+              return _vm.selectFile($event)
+            }
+          }
+        }),
         _vm._v(" "),
         _c(
           "v-btn",
@@ -43281,10 +43276,6 @@ var render = function() {
           ],
           1
         ),
-        _vm._v(" "),
-        _c("v-btn", { attrs: { depressed: "", color: "primary" } }, [
-          _vm._v("\n        Anexo\n        ")
-        ]),
         _vm._v(" "),
         _c(
           "v-btn",

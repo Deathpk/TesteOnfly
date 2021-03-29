@@ -6,15 +6,24 @@ use Illuminate\Http\Request;
 use App\Models\Despesas;
 use App\Models\User;
 use Auth;
+use Illuminate\Http\UploadedFile;
 class DespesasController extends Controller
 {
     public function createDespesa(Request $request)
     {
+        $anexoPath = null;
+        if($request->anexo != 'null'){
+            if ( $request->file('anexo')->isValid() ){
+                $storeAnexo = $this->storeAnexo($request->anexo);
+                $anexoPath = $storeAnexo;
+            }
+        }
+        
         try{
             Despesas::insert([
                 'descricao' => $request->descricao,
                 'data' => $request->data,
-                'anexo' => $request->anexo,
+                'anexo' => $anexoPath,
                 'user_id' => Auth::user()->id,
                 'valor' => $request->valor,
             ]);
@@ -31,13 +40,25 @@ class DespesasController extends Controller
         ],200);
     }
 
+
+    public function storeAnexo($anexo)
+    {
+        $name = uniqid(date('HisYmd'));
+        $extension = $anexo->extension();
+        $nameFile = "{$name}.{$extension}";
+        $newPath = $anexo->storeAs('anexos',$nameFile);
+
+        $fullPath = storage_path()."\app\anexos". "\{$nameFile}";
+        $fullPath = str_replace(['{','}'],'',$fullPath);
+        return $fullPath;
+    }
+
     public function getAllDespesas()
     {
         return response()->json(Despesas::all());
     }
 
-    
-    
+
     public function editDespesa(Request $request)
     {
         try{

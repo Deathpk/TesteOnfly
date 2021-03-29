@@ -31,7 +31,6 @@ Vue.component('dashboard-component', require('./components/Dashboard.vue').defau
 Vue.component('edit-form-component', require('./components/EditPage.vue').default);
 Vue.component('app-vue', require('./App.vue').default);
 
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
