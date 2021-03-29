@@ -1884,13 +1884,88 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     DataTable: _DataTable__WEBPACK_IMPORTED_MODULE_0__.default
   },
   data: function data() {
-    return {};
+    return {
+      dialog: false,
+      currentDespesaSelected: null
+    };
+  },
+  methods: {
+    openDeleteModal: function openDeleteModal(id) {
+      this.currentDespesaSelected = id;
+      this.dialog = true;
+    },
+    deleteDespesa: function deleteDespesa() {
+      var _this = this;
+
+      this.dialog = false;
+      axios.post('/dashboard/despesa/delete/', {
+        id: this.currentDespesaSelected
+      }).then(function (response) {
+        console.log(response);
+        _this.currentDespesaSelected = null;
+
+        _this.$router.push({
+          name: "dashboard",
+          message: response.message
+        });
+      })["catch"](function (error) {
+        console.log(error);
+        _this.currentDespesaSelected = null;
+      });
+    }
   }
 });
 
@@ -1979,6 +2054,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -1995,17 +2071,6 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    // showEditDespesaForm(despesa){
-    //     axios.post('/dashboard/despesas/edit/form', {
-    //         despesa:despesa
-    //     })
-    //     .then((response) => {
-    //         console.log(response);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //   });
-    // },
     getAllDespesas: function getAllDespesas() {
       var _this = this;
 
@@ -2129,12 +2194,28 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     editDespesa: function editDespesa() {
+      var _this = this;
+
       axios.post('/dashboard/despesas/edit/', {
         id: this.id,
         descricao: this.descricao,
         valor: this.valor,
         anexo: this.anexo,
         data: this.date
+      }).then(function (response) {
+        console.log(response);
+
+        if (response.error) {
+          _this.$router.push({
+            name: "dashboard",
+            message: response.message
+          });
+        }
+
+        _this.$router.push({
+          name: "dashboard",
+          message: response.message
+        });
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2145,7 +2226,7 @@ __webpack_require__.r(__webpack_exports__);
     this.id = this.$route.params.data.id;
     this.date = this.$route.params.data.data;
     this.valor = this.$route.params.data.valor;
-    this.anexo = this.$route.params.data.anexo; // console.log(this.despesa.descricao)
+    this.anexo = this.$route.params.data.anexo;
   }
 });
 
@@ -6779,7 +6860,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.Session-title h2[data-v-040e2ab9]{\r\n    font-family:'Montserrat', sans-serif;\r\n    font-size: 3rem;\r\n    border-bottom: solid 3px #6a3093;\r\n    position:relative;\r\n    display:inline-block\n}\n.Session-title p[data-v-040e2ab9]{\r\n    font-family:'Montserrat', sans-serif;\r\n    font-size: 2rem;\r\n    /* border-bottom: solid 3px #6a3093; */\r\n    position:relative;\r\n    display:inline-block\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.Session-title h2[data-v-040e2ab9]{\r\n    font-family:'Montserrat', sans-serif;\r\n    font-size: 3rem;\r\n    border-bottom: solid 3px #6a3093;\r\n    position:relative;\r\n    display:inline-block\n}\n.Session-title p[data-v-040e2ab9]{\r\n    font-family:'Montserrat', sans-serif;\r\n    font-size: 2rem;\r\n    /* border-bottom: solid 3px #6a3093; */\r\n    position:relative;\r\n    display:inline-block\n}\n.novaDespesa[data-v-040e2ab9]{\r\n    margin-bottom: 1rem;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -38569,7 +38650,117 @@ var render = function() {
         _c("p", [_vm._v("Listagem de Despesas")])
       ]),
       _vm._v(" "),
-      _c("v-row", [_c("v-col", [_c("DataTable")], 1)], 1)
+      _c(
+        "v-row",
+        [
+          _c(
+            "v-dialog",
+            {
+              attrs: { "max-width": "290" },
+              model: {
+                value: _vm.dialog,
+                callback: function($$v) {
+                  _vm.dialog = $$v
+                },
+                expression: "dialog"
+              }
+            },
+            [
+              _c(
+                "v-card",
+                [
+                  _c("v-card-title", [
+                    _vm._v(
+                      "\n                        Deseja realmente deletar esta despesa?\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("v-card-text", [
+                    _vm._v(
+                      "\n                        Essa ação , uma vez performada , não poderá ser desfeita.\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "v-card-actions",
+                    [
+                      _c("v-spacer"),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "green darken-1", text: "" },
+                          on: {
+                            click: function($event) {
+                              _vm.dialog = false
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                            Cancelar\n                        "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          attrs: { color: "red darken-1", text: "" },
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteDespesa()
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                            Sim , Deletar\n                        "
+                          )
+                        ]
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-row",
+        [
+          _c(
+            "v-col",
+            [
+              _c(
+                "v-btn",
+                {
+                  staticClass: "novaDespesa",
+                  style: { left: "50%", transform: "translateX(-50%)" },
+                  attrs: { depressed: "", color: "primary", top: "" }
+                },
+                [_vm._v("\n             Adicionar Despesa\n            ")]
+              ),
+              _vm._v(" "),
+              _c("DataTable", {
+                on: {
+                  openDeleteModal: function($event) {
+                    return _vm.openDeleteModal($event)
+                  }
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      )
     ],
     1
   )
@@ -38698,7 +38889,15 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "v-btn",
-                        { attrs: { depressed: "", color: "error" } },
+                        {
+                          attrs: { depressed: "", color: "error" },
+                          on: {
+                            click: function($event) {
+                              $event.stopPropagation()
+                              return _vm.$emit("openDeleteModal", despesa.id)
+                            }
+                          }
+                        },
                         [
                           _c(
                             "svg",

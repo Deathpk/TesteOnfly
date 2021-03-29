@@ -18,22 +18,46 @@ class DespesasController extends Controller
     }
 
     
-    public function showEditDespesaForm(Request $request)
-    {
-        dd($request);
-        // return view('editform', ['despesa' => $request->despesa] );
+    // public function showEditDespesaForm(Request $request)
+    // {
+    //     dd($request);
+    //     // return view('editform', ['despesa' => $request->despesa] );
 
-    }
+    // }
 
     public function editDespesa(Request $request)
     {
-        dd($request);
-        
+        try{
+            Despesas::editDespesa($request);
+        } catch(Exception $e){
+            return response()->json([
+                'error' => true,
+                'message' => 'Oops! , ocorreu um erro inesperado. Mensagem: '.$e->getMessage()
+            ],400);
+        }
+
+        return response()->json([
+            'error' => false,
+            'message' => 'Despesa editada com sucesso!'
+        ],200);
+
     }
 
-    public function deleteDespesa()
+    public function deleteDespesa(Request $request)
     {
-
+        try{
+            Despesas::where('id', $request->id)->delete();
+        } catch(Exception $e){
+            return response()->json([
+                'error' => true,
+                'message' => 'Oops! , ocorreu um erro inesperado. Mensagem: '.$e->getMessage()
+            ],400);
+        }
+        
+        return response()->json([
+            'error' => false,
+            'message' => 'Despesa deletada com sucesso!'
+        ]);
     }
     
 }

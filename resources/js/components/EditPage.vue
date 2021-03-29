@@ -102,6 +102,13 @@ export default {
                 anexo:this.anexo,
                 data:this.date
             })
+            .then((response) => {
+                console.log(response)
+                if(response.error){
+                    this.$router.push({ name:"dashboard" , message: response.message})
+                }
+                this.$router.push({ name:"dashboard" , message: response.message})
+            })
             .catch((error) => {
                 console.log(error)
             });
@@ -113,7 +120,6 @@ export default {
         this.date = this.$route.params.data.data
         this.valor = this.$route.params.data.valor
         this.anexo = this.$route.params.data.anexo
-        // console.log(this.despesa.descricao)
     }
 }
 </script>

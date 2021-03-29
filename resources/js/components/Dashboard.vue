@@ -7,9 +7,56 @@
         <div class="Session-title text-center">
             <p>Listagem de Despesas</p>
         </div>
+            <v-row>
+                <v-dialog
+                v-model="dialog"
+                max-width="290"
+                >
+                    <v-card>
+                        <v-card-title >
+                            Deseja realmente deletar esta despesa?
+                        </v-card-title>
+
+                        <v-card-text>
+                            Essa ação , uma vez performada , não poderá ser desfeita.
+                        </v-card-text>
+
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+
+                            <v-btn
+                                color="green darken-1"
+                                text
+                                @click="dialog = false"
+                            >
+                                Cancelar
+                            </v-btn>
+
+                            <v-btn
+                                color="red darken-1"
+                                text
+                                @click="deleteDespesa()"
+                            >
+                                Sim , Deletar
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+            </v-row>
         <v-row>
+            <!-- <SideBar/> -->
             <v-col>
-                <DataTable/>
+                 <v-btn
+                depressed
+                color="primary"
+                top
+                class="novaDespesa"
+                :style="{left: '50%', transform:'translateX(-50%)'}"
+                >
+                 Adicionar Despesa
+                </v-btn>
+                <DataTable
+                @openDeleteModal="openDeleteModal($event)"/>
             </v-col>
         </v-row>
     </v-container>
@@ -21,9 +68,31 @@ export default {
     components:{DataTable},
     data(){
         return{
-
+            dialog:false,
+            currentDespesaSelected: null
         }
     },
+    methods:{
+        openDeleteModal(id){
+            this.currentDespesaSelected = id
+            this.dialog = true
+        },
+        deleteDespesa(){
+            this.dialog = false
+            axios.post('/dashboard/despesa/delete/',{
+                id: this.currentDespesaSelected,
+            })
+            .then((response) => {
+                console.log(response)
+                this.currentDespesaSelected = null
+                this.$router.push({ name:"dashboard" , message: response.message})
+            })
+            .catch((error) => {
+                console.log(error)
+                this.currentDespesaSelected = null
+            });
+        },
+    }
 }
 </script>
 
@@ -41,6 +110,9 @@ export default {
     /* border-bottom: solid 3px #6a3093; */
     position:relative;
     display:inline-block
+}
+.novaDespesa{
+    margin-bottom: 1rem;
 }
 </style>
 
