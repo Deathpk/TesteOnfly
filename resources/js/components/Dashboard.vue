@@ -87,7 +87,6 @@ export default {
                 id: this.currentDespesaSelected,
             })
             .then((response) => {
-                console.log(response)
                 this.currentDespesaSelected = null
                 this.$router.go({ params:{item: response} })
             })
@@ -98,8 +97,7 @@ export default {
         },
     },
     created(){
-        console.log(this.$route.params)
-        if(this.$route.params.item.data.error){
+        if( this.$route.params.item && this.$route.params.item.data.error ){
             Swal.fire({
                 title: 'Oops , ocorreu um erro!',
                 text: this.$route.params.item.data.message,
@@ -107,7 +105,7 @@ export default {
                 confirmButtonText: 'Confirmar'
             })
         }
-        else if(!this.$route.params.item.data.error){
+        else if( this.$route.params.item && !this.$route.params.item.data.error ){
             Swal.fire({
                 title: 'Sucesso!',
                 text: this.$route.params.item.data.message,

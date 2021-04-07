@@ -27,8 +27,8 @@ import VueFilterNumericFormat from '@vuejs-community/vue-filter-numeric-format';
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('dashboard-component', require('./components/Dashboard.vue').default);
-Vue.component('edit-form-component', require('./components/EditPage.vue').default);
+// Vue.component('dashboard-component', require('./components/Dashboard.vue').default);
+// Vue.component('edit-form-component', require('./components/EditPage.vue').default);
 Vue.component('app-vue', require('./App.vue').default);
 
 /**

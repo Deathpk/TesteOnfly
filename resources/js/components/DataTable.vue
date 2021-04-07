@@ -1,5 +1,5 @@
 <template>
-    <v-simple-table dark>
+    <v-simple-table dark v-if="despesas.length>0">
         
         <template v-slot:default>
         <thead>
@@ -67,6 +67,16 @@
         </tbody>
         </template>
     </v-simple-table>
+
+    <v-card
+    v-else
+    elevation="2"
+    outlined
+    tile
+    >
+     <v-card-title class="justify-center">Não existem despesas disponíveis no momento</v-card-title>
+    </v-card>
+
 </template>
 
 <script>

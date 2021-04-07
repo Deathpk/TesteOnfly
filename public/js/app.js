@@ -1934,7 +1934,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  data: function data() {}
+  data: function data() {
+    return {};
+  }
 });
 
 /***/ }),
@@ -1962,6 +1964,12 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
 //
 //
 //
@@ -2046,13 +2054,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {
+    return _defineProperty({
+      valid: false,
+      descricaoRules: [function (v) {
+        return !!v || 'O campo descrição é Obrigatório';
+      }, function (v) {
+        return v.length >= 10 || 'A descrição deve conter no minimo 10 caracteres';
+      }],
+      valorRules: [function (v) {
+        return !!v || 'O campo valor é Obrigatório';
+      }],
       descricao: '',
+      menu: false,
       valor: '',
       anexo: null,
-      date: new Date().toISOString().substr(0, 10),
-      menu: false
-    };
+      date: new Date().toISOString().substr(0, 10)
+    }, "menu", false);
   },
   computed: {
     computedDateFormatted: function computedDateFormatted() {
@@ -2074,7 +2091,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     createDespesa: function createDespesa() {
       var _this = this;
 
-      console.log(this.anexo);
       var form = new FormData();
       form.append('anexo', this.anexo);
       form.append('descricao', this.descricao);
@@ -2206,7 +2222,6 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/dashboard/despesa/delete/', {
         id: this.currentDespesaSelected
       }).then(function (response) {
-        console.log(response);
         _this.currentDespesaSelected = null;
 
         _this.$router.go({
@@ -2221,16 +2236,14 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    console.log(this.$route.params);
-
-    if (this.$route.params.item.data.error) {
+    if (this.$route.params.item && this.$route.params.item.data.error) {
       sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
         title: 'Oops , ocorreu um erro!',
         text: this.$route.params.item.data.message,
         icon: 'error',
         confirmButtonText: 'Confirmar'
       });
-    } else if (!this.$route.params.item.data.error) {
+    } else if (this.$route.params.item && !this.$route.params.item.data.error) {
       sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
         title: 'Sucesso!',
         text: this.$route.params.item.data.message,
@@ -2270,6 +2283,16 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2527,9 +2550,24 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      valid: false,
+      descricaoRules: [function (v) {
+        return !!v || 'O campo descrição é Obrigatório';
+      }, function (v) {
+        return v.length >= 10 || 'A descrição deve conter no minimo 10 caracteres';
+      }],
+      valorRules: [function (v) {
+        return !!v || 'O campo valor é Obrigatório';
+      }],
+      menu: false,
       descricao: '',
       id: '',
       valor: '',
@@ -2628,9 +2666,9 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"
  */
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+// Vue.component('dashboard-component', require('./components/Dashboard.vue').default);
+// Vue.component('edit-form-component', require('./components/EditPage.vue').default);
 
-vue__WEBPACK_IMPORTED_MODULE_5__.default.component('dashboard-component', __webpack_require__(/*! ./components/Dashboard.vue */ "./resources/js/components/Dashboard.vue").default);
-vue__WEBPACK_IMPORTED_MODULE_5__.default.component('edit-form-component', __webpack_require__(/*! ./components/EditPage.vue */ "./resources/js/components/EditPage.vue").default);
 vue__WEBPACK_IMPORTED_MODULE_5__.default.component('app-vue', __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue").default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -42813,165 +42851,185 @@ var render = function() {
       "div",
       { staticClass: "form" },
       [
-        _c("v-textarea", {
-          attrs: {
-            outlined: "",
-            name: "input-7-4",
-            label: "Descricao",
-            value: _vm.descricao
-          },
-          model: {
-            value: _vm.descricao,
-            callback: function($$v) {
-              _vm.descricao = $$v
-            },
-            expression: "descricao"
-          }
-        }),
-        _vm._v(" "),
-        _c("v-text-field", {
-          attrs: { rules: _vm.nameRules, label: "Valor", required: "" },
-          model: {
-            value: _vm.valor,
-            callback: function($$v) {
-              _vm.valor = $$v
-            },
-            expression: "valor"
-          }
-        }),
-        _vm._v(" "),
         _c(
-          "v-menu",
+          "v-form",
           {
-            ref: "menu",
-            attrs: {
-              "close-on-content-click": false,
-              "return-value": _vm.date,
-              transition: "scale-transition",
-              "offset-y": "",
-              "min-width": "auto"
-            },
-            on: {
-              "update:returnValue": function($event) {
-                _vm.date = $event
-              },
-              "update:return-value": function($event) {
-                _vm.date = $event
-              }
-            },
-            scopedSlots: _vm._u([
-              {
-                key: "activator",
-                fn: function(ref) {
-                  var on = ref.on
-                  var attrs = ref.attrs
-                  return [
-                    _c(
-                      "v-text-field",
-                      _vm._g(
-                        _vm._b(
-                          {
-                            attrs: {
-                              "prepend-icon": "mdi-calendar",
-                              label: "Data",
-                              readonly: ""
-                            },
-                            model: {
-                              value: _vm.computedDateFormatted,
-                              callback: function($$v) {
-                                _vm.computedDateFormatted = $$v
-                              },
-                              expression: "computedDateFormatted"
-                            }
-                          },
-                          "v-text-field",
-                          attrs,
-                          false
-                        ),
-                        on
-                      )
-                    )
-                  ]
-                }
-              }
-            ]),
             model: {
-              value: _vm.menu,
+              value: _vm.valid,
               callback: function($$v) {
-                _vm.menu = $$v
+                _vm.valid = $$v
               },
-              expression: "menu"
+              expression: "valid"
             }
           },
           [
+            _c("v-textarea", {
+              attrs: {
+                outlined: "",
+                name: "input-7-4",
+                label: "Descricao",
+                rules: _vm.descricaoRules,
+                value: _vm.descricao
+              },
+              model: {
+                value: _vm.descricao,
+                callback: function($$v) {
+                  _vm.descricao = $$v
+                },
+                expression: "descricao"
+              }
+            }),
+            _vm._v(" "),
+            _c("v-text-field", {
+              attrs: { rules: _vm.valorRules, label: "Valor", required: "" },
+              model: {
+                value: _vm.valor,
+                callback: function($$v) {
+                  _vm.valor = $$v
+                },
+                expression: "valor"
+              }
+            }),
             _vm._v(" "),
             _c(
-              "v-date-picker",
+              "v-menu",
               {
-                attrs: { "no-title": "", scrollable: "" },
-                model: {
-                  value: _vm.date,
-                  callback: function($$v) {
-                    _vm.date = $$v
+                ref: "menu",
+                attrs: {
+                  "close-on-content-click": false,
+                  "return-value": _vm.date,
+                  transition: "scale-transition",
+                  "offset-y": "",
+                  "min-width": "auto"
+                },
+                on: {
+                  "update:returnValue": function($event) {
+                    _vm.date = $event
                   },
-                  expression: "date"
+                  "update:return-value": function($event) {
+                    _vm.date = $event
+                  }
+                },
+                scopedSlots: _vm._u([
+                  {
+                    key: "activator",
+                    fn: function(ref) {
+                      var on = ref.on
+                      var attrs = ref.attrs
+                      return [
+                        _c(
+                          "v-text-field",
+                          _vm._g(
+                            _vm._b(
+                              {
+                                attrs: {
+                                  "prepend-icon": "mdi-calendar",
+                                  label: "Data",
+                                  readonly: ""
+                                },
+                                model: {
+                                  value: _vm.computedDateFormatted,
+                                  callback: function($$v) {
+                                    _vm.computedDateFormatted = $$v
+                                  },
+                                  expression: "computedDateFormatted"
+                                }
+                              },
+                              "v-text-field",
+                              attrs,
+                              false
+                            ),
+                            on
+                          )
+                        )
+                      ]
+                    }
+                  }
+                ]),
+                model: {
+                  value: _vm.menu,
+                  callback: function($$v) {
+                    _vm.menu = $$v
+                  },
+                  expression: "menu"
                 }
               },
               [
-                _c("v-spacer"),
                 _vm._v(" "),
                 _c(
-                  "v-btn",
+                  "v-date-picker",
                   {
-                    attrs: { text: "", color: "primary" },
-                    on: {
-                      click: function($event) {
-                        _vm.menu = false
-                      }
+                    attrs: { "no-title": "", scrollable: "" },
+                    model: {
+                      value: _vm.date,
+                      callback: function($$v) {
+                        _vm.date = $$v
+                      },
+                      expression: "date"
                     }
                   },
-                  [_vm._v("\n            Cancelar\n        ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-btn",
-                  {
-                    attrs: { text: "", color: "primary" },
-                    on: {
-                      click: function($event) {
-                        return _vm.$refs.menu.save(_vm.date)
-                      }
-                    }
-                  },
-                  [_vm._v("\n            Confirmar\n        ")]
+                  [
+                    _c("v-spacer"),
+                    _vm._v(" "),
+                    _c(
+                      "v-btn",
+                      {
+                        attrs: { text: "", color: "primary" },
+                        on: {
+                          click: function($event) {
+                            _vm.menu = false
+                          }
+                        }
+                      },
+                      [_vm._v("\n                Cancelar\n            ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-btn",
+                      {
+                        attrs: { text: "", color: "primary" },
+                        on: {
+                          click: function($event) {
+                            return _vm.$refs.menu.save(_vm.date)
+                          }
+                        }
+                      },
+                      [_vm._v("\n                Confirmar\n            ")]
+                    )
+                  ],
+                  1
                 )
               ],
               1
+            ),
+            _vm._v(" "),
+            _c("v-file-input", {
+              attrs: { accept: "image/*", label: "Anexo" },
+              on: {
+                change: function($event) {
+                  return _vm.selectFile($event)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "v-btn",
+              {
+                attrs: {
+                  depressed: "",
+                  color: "success",
+                  disabled: !this.valid
+                },
+                on: {
+                  click: function($event) {
+                    return _vm.createDespesa()
+                  }
+                }
+              },
+              [_vm._v("\n            Adicionar\n            ")]
             )
           ],
           1
-        ),
-        _vm._v(" "),
-        _c("v-file-input", {
-          attrs: { accept: "image/*", label: "Anexo" },
-          on: {
-            change: function($event) {
-              return _vm.selectFile($event)
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "v-btn",
-          {
-            attrs: { depressed: "", color: "success" },
-            on: {
-              click: function($event) {
-                return _vm.createDespesa()
-              }
-            }
-          },
-          [_vm._v("\n        Adicionar\n        ")]
         )
       ],
       1
@@ -43157,162 +43215,191 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("v-simple-table", {
-    attrs: { dark: "" },
-    scopedSlots: _vm._u([
-      {
-        key: "default",
-        fn: function() {
-          return [
-            _c("thead", [
-              _c("tr", [
-                _c("th", { staticClass: "text-left" }, [
-                  _vm._v("\n            # ID\n        ")
-                ]),
-                _vm._v(" "),
-                _c("th", { staticClass: "text-left" }, [
-                  _vm._v("\n            Descrição\n        ")
-                ]),
-                _vm._v(" "),
-                _c("th", { staticClass: "text-left" }, [
-                  _vm._v("\n            Data\n        ")
-                ]),
-                _vm._v(" "),
-                _c("th", { staticClass: "text-left" }, [
-                  _vm._v("\n            Valor\n        ")
-                ]),
-                _vm._v(" "),
-                _c("th", { staticClass: "text-left" }, [
-                  _vm._v("\n            Ações\n        ")
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "tbody",
-              _vm._l(_vm.despesas, function(despesa) {
-                return _c("tr", { key: despesa.id }, [
-                  _c("td", [_vm._v(_vm._s(despesa.id))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(despesa.descricao))]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(_vm._s(_vm.despesaDateFormatted(despesa.data)))
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      "$ " + _vm._s(_vm._f("numericFormat")(despesa.valor))
-                    )
+  return _vm.despesas.length > 0
+    ? _c("v-simple-table", {
+        attrs: { dark: "" },
+        scopedSlots: _vm._u(
+          [
+            {
+              key: "default",
+              fn: function() {
+                return [
+                  _c("thead", [
+                    _c("tr", [
+                      _c("th", { staticClass: "text-left" }, [
+                        _vm._v("\n            # ID\n        ")
+                      ]),
+                      _vm._v(" "),
+                      _c("th", { staticClass: "text-left" }, [
+                        _vm._v("\n            Descrição\n        ")
+                      ]),
+                      _vm._v(" "),
+                      _c("th", { staticClass: "text-left" }, [
+                        _vm._v("\n            Data\n        ")
+                      ]),
+                      _vm._v(" "),
+                      _c("th", { staticClass: "text-left" }, [
+                        _vm._v("\n            Valor\n        ")
+                      ]),
+                      _vm._v(" "),
+                      _c("th", { staticClass: "text-left" }, [
+                        _vm._v("\n            Ações\n        ")
+                      ])
+                    ])
                   ]),
                   _vm._v(" "),
                   _c(
-                    "td",
-                    [
-                      _c(
-                        "v-btn",
-                        {
-                          attrs: { depressed: "", color: "primary" },
-                          on: {
-                            click: function($event) {
-                              return _vm.editDespesaForm(despesa)
-                            }
-                          }
-                        },
-                        [
-                          _c(
-                            "svg",
-                            {
-                              staticStyle: { width: "24px", height: "24px" },
-                              attrs: { viewBox: "0 0 24 24" }
-                            },
-                            [
-                              _c("path", {
-                                attrs: {
-                                  fill: "currentColor",
-                                  d:
-                                    "M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
-                                }
-                              })
-                            ]
+                    "tbody",
+                    _vm._l(_vm.despesas, function(despesa) {
+                      return _c("tr", { key: despesa.id }, [
+                        _c("td", [_vm._v(_vm._s(despesa.id))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(despesa.descricao))]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(_vm._s(_vm.despesaDateFormatted(despesa.data)))
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(
+                            "$ " +
+                              _vm._s(_vm._f("numericFormat")(despesa.valor))
                           )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-btn",
-                        {
-                          attrs: { depressed: "", color: "success" },
-                          on: {
-                            click: function($event) {
-                              $event.stopPropagation()
-                              return _vm.showDespesaDetail(despesa)
-                            }
-                          }
-                        },
-                        [
-                          _c(
-                            "svg",
-                            {
-                              staticStyle: { width: "24px", height: "24px" },
-                              attrs: { viewBox: "0 0 24 24" }
-                            },
-                            [
-                              _c("path", {
-                                attrs: {
-                                  fill: "currentColor",
-                                  d:
-                                    "M7,5H21V7H7V5M7,13V11H21V13H7M4,4.5A1.5,1.5 0 0,1 5.5,6A1.5,1.5 0 0,1 4,7.5A1.5,1.5 0 0,1 2.5,6A1.5,1.5 0 0,1 4,4.5M4,10.5A1.5,1.5 0 0,1 5.5,12A1.5,1.5 0 0,1 4,13.5A1.5,1.5 0 0,1 2.5,12A1.5,1.5 0 0,1 4,10.5M7,19V17H21V19H7M4,16.5A1.5,1.5 0 0,1 5.5,18A1.5,1.5 0 0,1 4,19.5A1.5,1.5 0 0,1 2.5,18A1.5,1.5 0 0,1 4,16.5Z"
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "v-btn",
+                              {
+                                attrs: { depressed: "", color: "primary" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.editDespesaForm(despesa)
+                                  }
                                 }
-                              })
-                            ]
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-btn",
-                        {
-                          attrs: { depressed: "", color: "error" },
-                          on: {
-                            click: function($event) {
-                              $event.stopPropagation()
-                              return _vm.$emit("openDeleteModal", despesa.id)
-                            }
-                          }
-                        },
-                        [
-                          _c(
-                            "svg",
-                            {
-                              staticStyle: { width: "24px", height: "24px" },
-                              attrs: { viewBox: "0 0 24 24" }
-                            },
-                            [
-                              _c("path", {
-                                attrs: {
-                                  fill: "currentColor",
-                                  d:
-                                    "M21 7H3V3H21V7M13 19C13 19.7 13.13 20.37 13.35 21H4V8H20V13.09C19.67 13.04 19.34 13 19 13C15.69 13 13 15.69 13 19M15 13V11.5C15 11.22 14.78 11 14.5 11H9.5C9.22 11 9 11.22 9 11.5V13H15M22.54 16.88L21.12 15.47L19 17.59L16.88 15.47L15.47 16.88L17.59 19L15.47 21.12L16.88 22.54L19 20.41L21.12 22.54L22.54 21.12L20.41 19L22.54 16.88Z"
+                              },
+                              [
+                                _c(
+                                  "svg",
+                                  {
+                                    staticStyle: {
+                                      width: "24px",
+                                      height: "24px"
+                                    },
+                                    attrs: { viewBox: "0 0 24 24" }
+                                  },
+                                  [
+                                    _c("path", {
+                                      attrs: {
+                                        fill: "currentColor",
+                                        d:
+                                          "M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
+                                      }
+                                    })
+                                  ]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-btn",
+                              {
+                                attrs: { depressed: "", color: "success" },
+                                on: {
+                                  click: function($event) {
+                                    $event.stopPropagation()
+                                    return _vm.showDespesaDetail(despesa)
+                                  }
                                 }
-                              })
-                            ]
-                          )
-                        ]
-                      )
-                    ],
-                    1
+                              },
+                              [
+                                _c(
+                                  "svg",
+                                  {
+                                    staticStyle: {
+                                      width: "24px",
+                                      height: "24px"
+                                    },
+                                    attrs: { viewBox: "0 0 24 24" }
+                                  },
+                                  [
+                                    _c("path", {
+                                      attrs: {
+                                        fill: "currentColor",
+                                        d:
+                                          "M7,5H21V7H7V5M7,13V11H21V13H7M4,4.5A1.5,1.5 0 0,1 5.5,6A1.5,1.5 0 0,1 4,7.5A1.5,1.5 0 0,1 2.5,6A1.5,1.5 0 0,1 4,4.5M4,10.5A1.5,1.5 0 0,1 5.5,12A1.5,1.5 0 0,1 4,13.5A1.5,1.5 0 0,1 2.5,12A1.5,1.5 0 0,1 4,10.5M7,19V17H21V19H7M4,16.5A1.5,1.5 0 0,1 5.5,18A1.5,1.5 0 0,1 4,19.5A1.5,1.5 0 0,1 2.5,18A1.5,1.5 0 0,1 4,16.5Z"
+                                      }
+                                    })
+                                  ]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "v-btn",
+                              {
+                                attrs: { depressed: "", color: "error" },
+                                on: {
+                                  click: function($event) {
+                                    $event.stopPropagation()
+                                    return _vm.$emit(
+                                      "openDeleteModal",
+                                      despesa.id
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "svg",
+                                  {
+                                    staticStyle: {
+                                      width: "24px",
+                                      height: "24px"
+                                    },
+                                    attrs: { viewBox: "0 0 24 24" }
+                                  },
+                                  [
+                                    _c("path", {
+                                      attrs: {
+                                        fill: "currentColor",
+                                        d:
+                                          "M21 7H3V3H21V7M13 19C13 19.7 13.13 20.37 13.35 21H4V8H20V13.09C19.67 13.04 19.34 13 19 13C15.69 13 13 15.69 13 19M15 13V11.5C15 11.22 14.78 11 14.5 11H9.5C9.22 11 9 11.22 9 11.5V13H15M22.54 16.88L21.12 15.47L19 17.59L16.88 15.47L15.47 16.88L17.59 19L15.47 21.12L16.88 22.54L19 20.41L21.12 22.54L22.54 21.12L20.41 19L22.54 16.88Z"
+                                      }
+                                    })
+                                  ]
+                                )
+                              ]
+                            )
+                          ],
+                          1
+                        )
+                      ])
+                    }),
+                    0
                   )
-                ])
-              }),
-              0
-            )
-          ]
-        },
-        proxy: true
-      }
-    ])
-  })
+                ]
+              },
+              proxy: true
+            }
+          ],
+          null,
+          false,
+          32027480
+        )
+      })
+    : _c(
+        "v-card",
+        { attrs: { elevation: "2", outlined: "", tile: "" } },
+        [
+          _c("v-card-title", { staticClass: "justify-center" }, [
+            _vm._v("Não existem despesas disponíveis no momento")
+          ])
+        ],
+        1
+      )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -43348,165 +43435,185 @@ var render = function() {
       "div",
       { staticClass: "form" },
       [
-        _c("v-textarea", {
-          attrs: {
-            outlined: "",
-            name: "input-7-4",
-            label: "Descricao",
-            value: _vm.descricao
-          },
-          model: {
-            value: _vm.descricao,
-            callback: function($$v) {
-              _vm.descricao = $$v
-            },
-            expression: "descricao"
-          }
-        }),
-        _vm._v(" "),
-        _c("v-text-field", {
-          attrs: { label: "Valor", required: "" },
-          model: {
-            value: _vm.valor,
-            callback: function($$v) {
-              _vm.valor = $$v
-            },
-            expression: "valor"
-          }
-        }),
-        _vm._v(" "),
-        _c("v-file-input", {
-          attrs: { accept: "image/*", label: "Anexo" },
-          on: {
-            change: function($event) {
-              return _vm.selectFile($event)
-            }
-          }
-        }),
-        _vm._v(" "),
         _c(
-          "v-menu",
+          "v-form",
           {
-            ref: "menu",
-            attrs: {
-              "close-on-content-click": false,
-              "return-value": _vm.date,
-              transition: "scale-transition",
-              "offset-y": "",
-              "min-width": "auto"
-            },
-            on: {
-              "update:returnValue": function($event) {
-                _vm.date = $event
-              },
-              "update:return-value": function($event) {
-                _vm.date = $event
-              }
-            },
-            scopedSlots: _vm._u([
-              {
-                key: "activator",
-                fn: function(ref) {
-                  var on = ref.on
-                  var attrs = ref.attrs
-                  return [
-                    _c(
-                      "v-text-field",
-                      _vm._g(
-                        _vm._b(
-                          {
-                            attrs: {
-                              label: "Data",
-                              "prepend-icon": "mdi-calendar",
-                              readonly: ""
-                            },
-                            model: {
-                              value: _vm.computedDateFormatted,
-                              callback: function($$v) {
-                                _vm.computedDateFormatted = $$v
-                              },
-                              expression: "computedDateFormatted"
-                            }
-                          },
-                          "v-text-field",
-                          attrs,
-                          false
-                        ),
-                        on
-                      )
-                    )
-                  ]
-                }
-              }
-            ]),
             model: {
-              value: _vm.menu,
+              value: _vm.valid,
               callback: function($$v) {
-                _vm.menu = $$v
+                _vm.valid = $$v
               },
-              expression: "menu"
+              expression: "valid"
             }
           },
           [
+            _c("v-textarea", {
+              attrs: {
+                outlined: "",
+                name: "input-7-4",
+                label: "Descricao",
+                rules: _vm.descricaoRules,
+                value: _vm.descricao
+              },
+              model: {
+                value: _vm.descricao,
+                callback: function($$v) {
+                  _vm.descricao = $$v
+                },
+                expression: "descricao"
+              }
+            }),
+            _vm._v(" "),
+            _c("v-text-field", {
+              attrs: { rules: _vm.valorRules, label: "Valor", required: "" },
+              model: {
+                value: _vm.valor,
+                callback: function($$v) {
+                  _vm.valor = $$v
+                },
+                expression: "valor"
+              }
+            }),
+            _vm._v(" "),
+            _c("v-file-input", {
+              attrs: { accept: "image/*", label: "Anexo" },
+              on: {
+                change: function($event) {
+                  return _vm.selectFile($event)
+                }
+              }
+            }),
             _vm._v(" "),
             _c(
-              "v-date-picker",
+              "v-menu",
               {
-                attrs: { "no-title": "", scrollable: "" },
-                model: {
-                  value: _vm.date,
-                  callback: function($$v) {
-                    _vm.date = $$v
+                ref: "menu",
+                attrs: {
+                  "close-on-content-click": false,
+                  "return-value": _vm.date,
+                  transition: "scale-transition",
+                  "offset-y": "",
+                  "min-width": "auto"
+                },
+                on: {
+                  "update:returnValue": function($event) {
+                    _vm.date = $event
                   },
-                  expression: "date"
+                  "update:return-value": function($event) {
+                    _vm.date = $event
+                  }
+                },
+                scopedSlots: _vm._u([
+                  {
+                    key: "activator",
+                    fn: function(ref) {
+                      var on = ref.on
+                      var attrs = ref.attrs
+                      return [
+                        _c(
+                          "v-text-field",
+                          _vm._g(
+                            _vm._b(
+                              {
+                                attrs: {
+                                  label: "Data",
+                                  "prepend-icon": "mdi-calendar",
+                                  readonly: ""
+                                },
+                                model: {
+                                  value: _vm.computedDateFormatted,
+                                  callback: function($$v) {
+                                    _vm.computedDateFormatted = $$v
+                                  },
+                                  expression: "computedDateFormatted"
+                                }
+                              },
+                              "v-text-field",
+                              attrs,
+                              false
+                            ),
+                            on
+                          )
+                        )
+                      ]
+                    }
+                  }
+                ]),
+                model: {
+                  value: _vm.menu,
+                  callback: function($$v) {
+                    _vm.menu = $$v
+                  },
+                  expression: "menu"
                 }
               },
               [
-                _c("v-spacer"),
                 _vm._v(" "),
                 _c(
-                  "v-btn",
+                  "v-date-picker",
                   {
-                    attrs: { text: "", color: "primary" },
-                    on: {
-                      click: function($event) {
-                        _vm.menu = false
-                      }
+                    attrs: { "no-title": "", scrollable: "" },
+                    model: {
+                      value: _vm.date,
+                      callback: function($$v) {
+                        _vm.date = $$v
+                      },
+                      expression: "date"
                     }
                   },
-                  [_vm._v("\n            Cancelar\n        ")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "v-btn",
-                  {
-                    attrs: { text: "", color: "primary" },
-                    on: {
-                      click: function($event) {
-                        return _vm.$refs.menu.save(_vm.date)
-                      }
-                    }
-                  },
-                  [_vm._v("\n            Confirmar\n        ")]
+                  [
+                    _c("v-spacer"),
+                    _vm._v(" "),
+                    _c(
+                      "v-btn",
+                      {
+                        attrs: { text: "", color: "primary" },
+                        on: {
+                          click: function($event) {
+                            _vm.menu = false
+                          }
+                        }
+                      },
+                      [_vm._v("\n                Cancelar\n            ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "v-btn",
+                      {
+                        attrs: { text: "", color: "primary" },
+                        on: {
+                          click: function($event) {
+                            return _vm.$refs.menu.save(_vm.date)
+                          }
+                        }
+                      },
+                      [_vm._v("\n                Confirmar\n            ")]
+                    )
+                  ],
+                  1
                 )
               ],
               1
+            ),
+            _vm._v(" "),
+            _c(
+              "v-btn",
+              {
+                attrs: {
+                  depressed: "",
+                  disabled: !this.valid,
+                  color: "success"
+                },
+                on: {
+                  click: function($event) {
+                    return _vm.editDespesa()
+                  }
+                }
+              },
+              [_vm._v("\n            Confirmar\n            ")]
             )
           ],
           1
-        ),
-        _vm._v(" "),
-        _c(
-          "v-btn",
-          {
-            attrs: { depressed: "", color: "success" },
-            on: {
-              click: function($event) {
-                return _vm.editDespesa()
-              }
-            }
-          },
-          [_vm._v("\n        Enviar\n        ")]
         )
       ],
       1

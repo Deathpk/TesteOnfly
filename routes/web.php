@@ -23,7 +23,14 @@ Route::get('/', function () {
 Route::prefix('dashboard')->middleware(['auth'])->group(function (){ 
     Route::get('/despesas/get',[DespesasController::class, 'getAllDespesas']);
     Route::post('/despesas/create', [DespesasController::class, 'createDespesa']);
+    Route::get('/despesas/create/form', function(){
+        return view('home');
+    });
     Route::post('/despesas/edit/',[DespesasController::class, 'editDespesa']);
+    Route::get('/despesas/edit/form', function (){
+        return view('home');
+    });
     Route::post('/despesa/delete', [DespesasController::class, 'deleteDespesa']);
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
+
