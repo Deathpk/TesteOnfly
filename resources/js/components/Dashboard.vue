@@ -45,7 +45,7 @@
             </v-row>
         <v-row>
             <v-col>
-                 <v-btn
+                <v-btn
                 depressed
                 color="primary"
                 top
@@ -71,7 +71,6 @@ export default {
         return{
             dialog:false,
             currentDespesaSelected: null,
-            // currentMessage:''
         }
     },
     methods:{

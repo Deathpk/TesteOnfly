@@ -13,8 +13,8 @@ import Vue from 'vue';
 import EditPage from './components/EditPage.vue';
 import CreatePage from './components/CreatePage.vue';
 import Dashboard from './components/Dashboard.vue';
-import Swal from 'sweetalert2'
-
+// import Swal from 'sweetalert2';
+import VueFilterNumericFormat from '@vuejs-community/vue-filter-numeric-format';
 
 /**
  * The following block of code may be used to automatically register your
@@ -60,8 +60,16 @@ const router = new VueRouter({
     ]
 });
 
+Vue.use(VueFilterNumericFormat, {
+    decimalSeparator: ',',
+    fractionDigitsMax: 2,
+    fractionDigitsMin: 2,
+    fractionDigitsSeparator: '',
+    thousandsDigitsSeparator: '.'
+});
+
 const app = new Vue({
     el: '#app',
     vuetify,
-    router
+    router,
 });

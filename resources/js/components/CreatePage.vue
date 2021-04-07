@@ -32,9 +32,9 @@
             >
             <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                    v-model="date"
-                    label="Data"
                     prepend-icon="mdi-calendar"
+                    v-model="computedDateFormatted"
+                    label="Data"
                     readonly
                     v-bind="attrs"
                     v-on="on"
@@ -91,7 +91,17 @@ export default {
             menu: false,
         }
     },
+    computed:{
+        computedDateFormatted(){
+            return this.formatDate(this.date)
+        }
+    },
     methods:{
+        formatDate(date){
+            if(!date) return null
+            const [year, month , day] = date.split('-')
+            return `${day}/${month}/${year}`
+        },
         createDespesa(){
             console.log(this.anexo);
             const form = new FormData();

@@ -12,9 +12,16 @@ class Despesas extends Model
 
     public static function editDespesa($despesa)
     {
-        foreach($despesa->except('id') as $key => $value){
+        $currentAnexo = Despesas::where('id', $despesa['id'])->first('anexo');
+        
+        if($currentAnexo->anexo != null && $despesa['anexo'] != null){
+            unlink($currentAnexo->anexo);
+        }
+
+        $collection = collect($despesa)->except('id');
+        foreach($collection as $key => $value){
             if($value){
-                Despesas::where('id', $despesa->id)->update([
+                Despesas::where('id', $despesa['id'])->update([
                     $key => $value
                 ]);
             }

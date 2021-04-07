@@ -61,8 +61,21 @@ class DespesasController extends Controller
 
     public function editDespesa(Request $request)
     {
+        $anexoPath = null;
+        if($request->file('anexo') != null){
+            if ( $request->file('anexo')->isValid() ){
+                $storeAnexo = $this->storeAnexo($request->anexo);
+                $anexoPath = $storeAnexo;
+            }
+        }
         try{
-            Despesas::editDespesa($request);
+            Despesas::editDespesa([
+                'id'=> $request->id,
+                'anexo' => $anexoPath,
+                'descricao' => $request->descricao,
+                'valor' => $request->valor,
+                'data' => $request->data
+            ]);
         } catch(Exception $e){
             return response()->json([
                 'error' => true,
@@ -80,7 +93,11 @@ class DespesasController extends Controller
     public function deleteDespesa(Request $request)
     {
         try{
+            $anexoPath = Despesas::where('id', $request->id)->first('anexo');
             Despesas::where('id', $request->id)->delete();
+            if($anexoPath->anexo != null){
+                unlink($anexoPath->anexo);
+            }
         } catch(Exception $e){
             return response()->json([
                 'error' => true,

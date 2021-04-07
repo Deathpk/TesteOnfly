@@ -1,6 +1,90 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/@vuejs-community/vue-filter-numeric-format/dist/vue-filter-numeric-format.esm.js":
+/*!*******************************************************************************************************!*\
+  !*** ./node_modules/@vuejs-community/vue-filter-numeric-format/dist/vue-filter-numeric-format.esm.js ***!
+  \*******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "numericFormat": () => (/* binding */ numericFormat)
+/* harmony export */ });
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
+var version = "1.0.8";
+
+function getIntFragment(input, separator) {
+    return Math
+        .trunc(input)
+        .toString()
+        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + separator);
+}
+function getFloatFragment(input, separator, min, max) {
+    var float = parseFloat("0." + (input.toString().split('.')[1] || '').slice(0, max) + ")");
+    return float
+        .toString()
+        .substring(2)
+        .padEnd(min, '0')
+        .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + separator);
+}
+function numericFormat(input, config) {
+    if (config === void 0) { config = {}; }
+    var _a = config.decimalSeparator, decimalSeparator = _a === void 0 ? ',' : _a, _b = config.fractionDigitsMax, fractionDigitsMax = _b === void 0 ? 2 : _b, _c = config.fractionDigitsMin, fractionDigitsMin = _c === void 0 ? 2 : _c, _d = config.fractionDigitsSeparator, fractionDigitsSeparator = _d === void 0 ? '' : _d, _e = config.thousandsDigitsSeparator, thousandsDigitsSeparator = _e === void 0 ? ' ' : _e;
+    var intFragment = getIntFragment(input, thousandsDigitsSeparator);
+    if (fractionDigitsMax === 0) {
+        return intFragment;
+    }
+    var floatFragment = getFloatFragment(input, fractionDigitsSeparator, fractionDigitsMin, fractionDigitsMax);
+    if (floatFragment.length === 0) {
+        return intFragment;
+    }
+    return "" + intFragment + decimalSeparator + floatFragment;
+}
+var vueFilterNumericFormat = {
+    install: function (Vue, baseConfig) {
+        Vue.filter('numericFormat', function (input, config) {
+            if (config === void 0) { config = {}; }
+            return numericFormat(input, __assign(__assign({}, baseConfig), config));
+        });
+    },
+    version: version
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (vueFilterNumericFormat);
+
+//# sourceMappingURL=vue-filter-numeric-format.esm.js.map
+
+
+/***/ }),
+
 /***/ "./node_modules/axios/index.js":
 /*!*************************************!*\
   !*** ./node_modules/axios/index.js ***!
@@ -1866,6 +1950,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 //
 //
 //
@@ -1958,7 +2054,23 @@ __webpack_require__.r(__webpack_exports__);
       menu: false
     };
   },
+  computed: {
+    computedDateFormatted: function computedDateFormatted() {
+      return this.formatDate(this.date);
+    }
+  },
   methods: {
+    formatDate: function formatDate(date) {
+      if (!date) return null;
+
+      var _date$split = date.split('-'),
+          _date$split2 = _slicedToArray(_date$split, 3),
+          year = _date$split2[0],
+          month = _date$split2[1],
+          day = _date$split2[2];
+
+      return "".concat(day, "/").concat(month, "/").concat(year);
+    },
     createDespesa: function createDespesa() {
       var _this = this;
 
@@ -2074,8 +2186,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       dialog: false,
-      currentDespesaSelected: null // currentMessage:''
-
+      currentDespesaSelected: null
     };
   },
   methods: {
@@ -2147,6 +2258,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_1__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 //
 //
 //
@@ -2223,8 +2346,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      despesas: []
+      despesas: [],
+      dateFormatted: new Date().toISOString().substr(0, 10)
     };
+  },
+  computed: {
+    computedDateFormatted: function computedDateFormatted() {
+      return this.formatDate(this.dateFormatted);
+    },
+    despesaDateFormatted: function despesaDateFormatted() {
+      var _this = this;
+
+      return function (despesaDate) {
+        return _this.formatDate(despesaDate);
+      };
+    }
   },
   methods: {
     editDespesaForm: function editDespesaForm(despesa) {
@@ -2236,19 +2372,30 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getAllDespesas: function getAllDespesas() {
-      var _this = this;
+      var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default().get('/dashboard/despesas/get').then(function (response) {
-        _this.despesas = response.data;
+        _this2.despesas = response.data;
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    formatDate: function formatDate(date) {
+      if (!date) return null;
+
+      var _date$split = date.split('-'),
+          _date$split2 = _slicedToArray(_date$split, 3),
+          year = _date$split2[0],
+          month = _date$split2[1],
+          day = _date$split2[2];
+
+      return "".concat(day, "/").concat(month, "/").concat(year);
     },
     showDespesaDetail: function showDespesaDetail(despesa) {
       sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
         title: '<strong>Detalhes da Despesa</strong>',
         icon: 'info',
-        html: '<hr>' + '<b>Descrição:</b> ' + despesa.descricao + '<hr> <br> ' + '<b>Data:</b> ' + despesa.data + '<hr>' + '<b>Valor:</b> ' + despesa.valor,
+        html: '<hr>' + '<b>Descrição:</b> ' + despesa.descricao + '<hr> <br> ' + '<b>Data:</b> ' + this.formatDate(despesa.data) + '<hr>' + '<b>Anexo: </b> ' + "<img src=\"".concat(despesa.anexo, "\">") + '<b>Valor:</b> ' + despesa.valor,
         showCloseButton: true,
         showCancelButton: false,
         focusConfirm: false,
@@ -2274,6 +2421,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2356,20 +2521,40 @@ __webpack_require__.r(__webpack_exports__);
       descricao: '',
       id: '',
       valor: '',
+      anexo: null,
       date: new Date().toISOString().substr(0, 10)
     };
   },
+  computed: {
+    computedDateFormatted: function computedDateFormatted() {
+      return this.formatDate(this.date);
+    }
+  },
   methods: {
+    formatDate: function formatDate(date) {
+      if (!date) return null;
+
+      var _date$split = date.split('-'),
+          _date$split2 = _slicedToArray(_date$split, 3),
+          year = _date$split2[0],
+          month = _date$split2[1],
+          day = _date$split2[2];
+
+      return "".concat(day, "/").concat(month, "/").concat(year);
+    },
+    selectFile: function selectFile(event) {
+      this.anexo = event;
+    },
     editDespesa: function editDespesa() {
       var _this = this;
 
-      axios.post('/dashboard/despesas/edit/', {
-        id: this.id,
-        descricao: this.descricao,
-        valor: this.valor,
-        data: this.date
-      }).then(function (response) {
-        // console.log(response)
+      var form = new FormData();
+      form.append('id', this.id);
+      form.append('anexo', this.anexo);
+      form.append('descricao', this.descricao);
+      form.append('valor', this.valor);
+      form.append('data', this.date);
+      axios.post('/dashboard/despesas/edit/', form).then(function (response) {
         _this.$router.push({
           name: "dashboard",
           params: {
@@ -2405,8 +2590,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_EditPage_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/EditPage.vue */ "./resources/js/components/EditPage.vue");
 /* harmony import */ var _components_CreatePage_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/CreatePage.vue */ "./resources/js/components/CreatePage.vue");
 /* harmony import */ var _components_Dashboard_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Dashboard.vue */ "./resources/js/components/Dashboard.vue");
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _vuejs_community_vue_filter_numeric_format__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @vuejs-community/vue-filter-numeric-format */ "./node_modules/@vuejs-community/vue-filter-numeric-format/dist/vue-filter-numeric-format.esm.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -2420,6 +2604,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"
 
 
 
+ // import Swal from 'sweetalert2';
 
 
 /**
@@ -2457,6 +2642,13 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_6__.default({
     name: 'editForm',
     component: _components_EditPage_vue__WEBPACK_IMPORTED_MODULE_1__.default
   }]
+});
+vue__WEBPACK_IMPORTED_MODULE_5__.default.use(_vuejs_community_vue_filter_numeric_format__WEBPACK_IMPORTED_MODULE_4__.default, {
+  decimalSeparator: ',',
+  fractionDigitsMax: 2,
+  fractionDigitsMin: 2,
+  fractionDigitsSeparator: '',
+  thousandsDigitsSeparator: '.'
 });
 var app = new vue__WEBPACK_IMPORTED_MODULE_5__.default({
   el: '#app',
@@ -42668,16 +42860,16 @@ var render = function() {
                         _vm._b(
                           {
                             attrs: {
-                              label: "Data",
                               "prepend-icon": "mdi-calendar",
+                              label: "Data",
                               readonly: ""
                             },
                             model: {
-                              value: _vm.date,
+                              value: _vm.computedDateFormatted,
                               callback: function($$v) {
-                                _vm.date = $$v
+                                _vm.computedDateFormatted = $$v
                               },
-                              expression: "date"
+                              expression: "computedDateFormatted"
                             }
                           },
                           "v-text-field",
@@ -42992,9 +43184,15 @@ var render = function() {
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(despesa.descricao))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(despesa.data))]),
+                  _c("td", [
+                    _vm._v(_vm._s(_vm.despesaDateFormatted(despesa.data)))
+                  ]),
                   _vm._v(" "),
-                  _c("td", [_vm._v("$ " + _vm._s(despesa.valor))]),
+                  _c("td", [
+                    _vm._v(
+                      "$ " + _vm._s(_vm._f("numericFormat")(despesa.valor))
+                    )
+                  ]),
                   _vm._v(" "),
                   _c(
                     "td",
@@ -43155,13 +43353,22 @@ var render = function() {
         }),
         _vm._v(" "),
         _c("v-text-field", {
-          attrs: { rules: _vm.nameRules, label: "Valor", required: "" },
+          attrs: { label: "Valor", required: "" },
           model: {
             value: _vm.valor,
             callback: function($$v) {
               _vm.valor = $$v
             },
             expression: "valor"
+          }
+        }),
+        _vm._v(" "),
+        _c("v-file-input", {
+          attrs: { accept: "image/*", label: "Anexo" },
+          on: {
+            change: function($event) {
+              return _vm.selectFile($event)
+            }
           }
         }),
         _vm._v(" "),
@@ -43202,11 +43409,11 @@ var render = function() {
                               readonly: ""
                             },
                             model: {
-                              value: _vm.date,
+                              value: _vm.computedDateFormatted,
                               callback: function($$v) {
-                                _vm.date = $$v
+                                _vm.computedDateFormatted = $$v
                               },
-                              expression: "date"
+                              expression: "computedDateFormatted"
                             }
                           },
                           "v-text-field",

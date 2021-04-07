@@ -16,10 +16,16 @@
 
             <v-text-field
             v-model="valor"
-            :rules="nameRules"
             label="Valor"
             required
-            ></v-text-field>
+            >
+            </v-text-field>
+
+            <v-file-input
+            accept="image/*"
+            label="Anexo"
+            @change="selectFile($event)"
+            ></v-file-input>
 
             <v-menu
             ref="menu"
@@ -32,7 +38,7 @@
             >
             <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                    v-model="date"
+                    v-model="computedDateFormatted"
                     label="Data"
                     prepend-icon="mdi-calendar"
                     readonly
@@ -75,26 +81,42 @@
 </template>
 
 <script>
-
 export default {
     data(){
         return{
             descricao: '',
             id:'',
             valor:'',
+            anexo:null,
             date: new Date().toISOString().substr(0, 10)
         }
     },
+    computed:{
+        computedDateFormatted(){
+            return this.formatDate(this.date)
+        },
+    },
     methods:{
+        formatDate(date){
+            if(!date) return null
+            const [year, month , day] = date.split('-')
+            return `${day}/${month}/${year}`
+        },
+
+        selectFile(event){
+            this.anexo = event
+        },
+
         editDespesa(){
-            axios.post('/dashboard/despesas/edit/',{
-                id: this.id,
-                descricao:this.descricao,
-                valor:this.valor,
-                data:this.date
-            })
+            const form = new FormData();
+            form.append('id', this.id);
+            form.append('anexo', this.anexo);
+            form.append('descricao', this.descricao);
+            form.append('valor', this.valor);
+            form.append('data', this.date);
+
+            axios.post('/dashboard/despesas/edit/',form)
             .then((response) => {
-                // console.log(response)
                 this.$router.push({ name:"dashboard" , params:{item:response} })
             })
             .catch((error) => {

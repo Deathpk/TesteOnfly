@@ -29,8 +29,8 @@
             >
             <td>{{ despesa.id }}</td>
             <td>{{ despesa.descricao }}</td>
-            <td>{{ despesa.data }}</td>
-            <td>$ {{ despesa.valor }}</td>
+            <td>{{ despesaDateFormatted(despesa.data) }}</td>
+            <td>$ {{ despesa.valor | numericFormat}}</td>
             <td>
                 <v-btn
                 depressed
@@ -73,12 +73,26 @@
 import axios from 'axios';
 import Swal from 'sweetalert2'
 export default {
-  
+    
   data(){
     return{
-      despesas:[]
+      despesas:[],
+      dateFormatted:new Date().toISOString().substr(0, 10),
     }
   },
+
+  computed:{
+    computedDateFormatted(){
+        return this.formatDate(this.dateFormatted)
+    },
+    despesaDateFormatted(){
+        return despesaDate =>{
+            return this.formatDate(despesaDate)
+        }
+    }
+  },
+  
+ 
   methods:{
     editDespesaForm(despesa){
         this.$router.push({ name:"editForm",params:{ data:despesa } })
@@ -87,12 +101,19 @@ export default {
     getAllDespesas(){
       axios.get('/dashboard/despesas/get')
       .then((response) => {
-        this.despesas = response.data 
+        this.despesas = response.data
       })
       .catch((error) => {
           console.log(error);
       })
     },
+
+    formatDate(date){
+        if(!date) return null
+        const [year, month , day] = date.split('-')
+        return `${day}/${month}/${year}`
+    },
+
     showDespesaDetail(despesa){
         Swal.fire({
             title: '<strong>Detalhes da Despesa</strong>',
@@ -101,8 +122,9 @@ export default {
                 '<hr>'+
                 '<b>Descrição:</b> ' + despesa.descricao +
                 '<hr> <br> ' +
-                '<b>Data:</b> '+ despesa.data+
+                '<b>Data:</b> '+ this.formatDate(despesa.data)+
                 '<hr>'+
+                '<b>Anexo: </b> '+ `<img src="${despesa.anexo}">`+
                 '<b>Valor:</b> ' + despesa.valor,
             showCloseButton: true,
             showCancelButton: false,
