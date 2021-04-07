@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Despesas extends Model
 {
@@ -15,7 +16,7 @@ class Despesas extends Model
         $currentAnexo = Despesas::where('id', $despesa['id'])->first('anexo');
         
         if($currentAnexo->anexo != null && $despesa['anexo'] != null){
-            unlink($currentAnexo->anexo);
+            Storage::delete('anexos/'.$currentAnexo->anexo);
         }
 
         $collection = collect($despesa)->except('id');

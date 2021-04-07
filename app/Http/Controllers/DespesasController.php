@@ -7,15 +7,16 @@ use App\Models\Despesas;
 use App\Models\User;
 use Auth;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 class DespesasController extends Controller
 {
     public function createDespesa(Request $request)
     {
         $anexoPath = null;
-        if($request->anexo != 'null'){
+        if($request->file('anexo') != null){
             if ( $request->file('anexo')->isValid() ){
-                $storeAnexo = $this->storeAnexo($request->anexo);
-                $anexoPath = $storeAnexo;
+                $upload = $request->anexo->store('anexos');
+                $anexoPath = $request->anexo->hashName();
             }
         }
         
@@ -41,18 +42,6 @@ class DespesasController extends Controller
     }
 
 
-    public function storeAnexo($anexo)
-    {
-        $name = uniqid(date('HisYmd'));
-        $extension = $anexo->extension();
-        $nameFile = "{$name}.{$extension}";
-        $newPath = $anexo->storeAs('anexos',$nameFile);
-
-        $fullPath = storage_path()."\app\anexos". "\{$nameFile}";
-        $fullPath = str_replace(['{','}'],'',$fullPath);
-        return $fullPath;
-    }
-
     public function getAllDespesas()
     {
         return response()->json(Despesas::all());
@@ -64,8 +53,8 @@ class DespesasController extends Controller
         $anexoPath = null;
         if($request->file('anexo') != null){
             if ( $request->file('anexo')->isValid() ){
-                $storeAnexo = $this->storeAnexo($request->anexo);
-                $anexoPath = $storeAnexo;
+                $upload = $request->anexo->store('anexos');
+                $anexoPath = $request->anexo->hashName();
             }
         }
         try{
@@ -96,7 +85,7 @@ class DespesasController extends Controller
             $anexoPath = Despesas::where('id', $request->id)->first('anexo');
             Despesas::where('id', $request->id)->delete();
             if($anexoPath->anexo != null){
-                unlink($anexoPath->anexo);
+                Storage::delete('anexos/'.$anexoPath->anexo);
             }
         } catch(Exception $e){
             return response()->json([

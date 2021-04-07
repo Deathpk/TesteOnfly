@@ -2392,15 +2392,27 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       return "".concat(day, "/").concat(month, "/").concat(year);
     },
     showDespesaDetail: function showDespesaDetail(despesa) {
-      sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
-        title: '<strong>Detalhes da Despesa</strong>',
-        icon: 'info',
-        html: '<hr>' + '<b>Descrição:</b> ' + despesa.descricao + '<hr> <br> ' + '<b>Data:</b> ' + this.formatDate(despesa.data) + '<hr>' + '<b>Anexo: </b> ' + "<img src=\"".concat(despesa.anexo, "\">") + '<b>Valor:</b> ' + despesa.valor,
-        showCloseButton: true,
-        showCancelButton: false,
-        focusConfirm: false,
-        confirmButtonText: 'Confirmar'
-      });
+      if (despesa.anexo != null) {
+        sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
+          title: '<strong>Detalhes da Despesa</strong>',
+          icon: 'info',
+          html: '<hr>' + '<b>Descrição:</b> ' + despesa.descricao + '<hr> <br> ' + '<b>Data:</b> ' + this.formatDate(despesa.data) + '<hr>' + '<b>Anexo: </b> ' + "<img src=\"../storage/anexos/".concat(despesa.anexo, "\" width=\"400\" height=\"300\">") + '<hr>' + '<b>Valor:</b> $ ' + despesa.valor,
+          showCloseButton: true,
+          showCancelButton: false,
+          focusConfirm: false,
+          confirmButtonText: 'Confirmar'
+        });
+      } else {
+        sweetalert2__WEBPACK_IMPORTED_MODULE_1___default().fire({
+          title: '<strong>Detalhes da Despesa</strong>',
+          icon: 'info',
+          html: '<hr>' + '<b>Descrição:</b> ' + despesa.descricao + '<hr> <br> ' + '<b>Data:</b> ' + this.formatDate(despesa.data) + '<hr>' + '<b>Valor:</b> $ ' + despesa.valor,
+          showCloseButton: true,
+          showCancelButton: false,
+          focusConfirm: false,
+          confirmButtonText: 'Confirmar'
+        });
+      }
     }
   },
   created: function created() {
